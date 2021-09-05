@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!-- Item to handle navigation to breaking news fragment, the id
+   must be exactly the same id as that of the fragment in news_nav_graph
+   for this to work-->
+    <item
+        android:id="@+id/breakingNewsFragment"
+        android:title="Breaking News"
+        android:icon="@drawable/ic_breakingnews"/>
+    <item
+        android:id="@+id/savedNewsFragment"
+        android:title="Saved News"
+        android:icon="@drawable/ic_favourite_white"/>
+    <item
+        android:id="@+id/searchNewsFragment"
+        android:title="Search News"
+        android:icon="@drawable/ic_searchnews"/>
+
+</menu>
