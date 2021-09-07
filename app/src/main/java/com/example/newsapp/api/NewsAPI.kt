@@ -1,7 +1,7 @@
 package com.example.newsapp.api
 
 
-import com.example.newsapp.ui.NewsResponse
+import com.example.newsapp.models.NewsResponse
 import com.example.newsapp.util.Constants
 import retrofit2.Response
 import retrofit2.http.GET
@@ -22,7 +22,7 @@ interface NewsAPI {
 
     @GET("v2/everything")  //url path for searching news
     suspend fun searchForNews(
-        @Query("q")        //defining the query parameters
+        @Query("q")        //the query that contains the news we want to search for
         searchQuery:String,
         @Query("page")          //useful for pagination(by default pageSize is 20, i.e. 20 results per page)
         pageNumber:Int =1,
