@@ -14,7 +14,7 @@ Since user can save articles for later we make the article data class an entity/
 )
 data class Article(
         @PrimaryKey(autoGenerate = true) //autogenerate the primary key
-    var id:Int? = null,
+        var id:Int? = null,
         val author: Any,
         val content: String,
         val description: String,
