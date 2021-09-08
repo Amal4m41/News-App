@@ -19,7 +19,7 @@ To solve this problem we use DiffUtil as it calculates the difference between tw
 that is different and another advantage is that this happens in the background without blocking our UI/Main thread.
 
  */
-class NewsAdapter(private val context: Context) :
+class NewsAdapter :
         RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>(){
 
 //    private var onClickListenerRecyclerListItem:OnClickListenerRecyclerListItem?=null
@@ -45,7 +45,7 @@ class NewsAdapter(private val context: Context) :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        val layoutInflater = LayoutInflater.from(context)
+        val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemArticlePreviewBinding.inflate(layoutInflater, parent, false)
 
         return ArticleViewHolder(binding)
@@ -56,7 +56,7 @@ class NewsAdapter(private val context: Context) :
         holder.positionValue=position  //while binding the data to this view, the position value is updated.
 
         holder.binding.apply {
-            Glide.with(context).load(itemArticle.urlToImage).into(ivArticleImage)
+            Glide.with(holder.binding.root).load(itemArticle.urlToImage).into(ivArticleImage)
             tvSource.text = itemArticle.source.name
             tvDescription.text = itemArticle.description
             tvTitle.text = itemArticle.title
