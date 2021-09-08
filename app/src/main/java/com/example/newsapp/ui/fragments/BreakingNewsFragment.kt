@@ -22,23 +22,22 @@ import java.util.*
 
 class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
 
-    private lateinit var rvBreakingNews:RecyclerView
-    private lateinit var paginationProgressBar:ProgressBar
+    private var _binding:FragmentBreakingNewsBinding?=null
+    private val binding:FragmentBreakingNewsBinding get() = _binding!!
 
     private lateinit var viewModel:NewsViewModel
     private lateinit var newsAdapter:NewsAdapter
-//    private lateinit var binding:FragmentBreakingNewsBinding
 
     val TAG = "BreakingNewsFragment"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding = FragmentBreakingNewsBinding.inflate(layoutInflater)
-        rvBreakingNews = view.findViewById(R.id.rvBreakingNews)
-        paginationProgressBar = view.findViewById(R.id.paginationProgressBarBreakingNews)
+        _binding = FragmentBreakingNewsBinding.bind(view)
 
-        viewModel = (activity as NewsActivity).viewModel
         setupRecyclerView()
+
+        //get the instance value of viewmodel from the newsactivity
+        viewModel = (activity as NewsActivity).viewModel
 
         //subscribing to all the changes w.r.t the livedata
         viewModel.breakingNews.observe(viewLifecycleOwner, {
@@ -47,9 +46,9 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
                     hideProgressBar()
                     //if the data is not null the update the recycler view list
                     it.data?.let { newsResponse ->
-                        Toast.makeText(activity, "SUCCESS $newsAdapter", Toast.LENGTH_SHORT).show()
-                        newsAdapter.differ.submitList(newsResponse.articles)
-                        Toast.makeText(activity, "${newsAdapter.itemCount}", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(activity, "SUCCESS $newsAdapter", Toast.LENGTH_SHORT).show()
+                        newsAdapter.differ.submitList(newsResponse.articles)  //passing the articles list to the adapter
+//                        Toast.makeText(activity, "${newsAdapter.itemCount}", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -70,24 +69,27 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
 
     }
 
+    //Note: Fragments outlive their views. Make sure you clean up any references to the binding class
+    // instance in the fragment's onDestroyView() method.
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun hideProgressBar(){
-        paginationProgressBar.visibility = View.INVISIBLE
+        binding.paginationProgressBarBreakingNews.visibility = View.INVISIBLE
     }
 
     private fun showProgressBar(){
-        paginationProgressBar.visibility = View.VISIBLE
+        binding.paginationProgressBarBreakingNews.visibility = View.VISIBLE
     }
 
 
     private fun setupRecyclerView(){
-        newsAdapter = NewsAdapter()
-//        binding.rvBreakingNews.apply {
-//            layoutManager= LinearLayoutManager(activity)
-//            adapter=newsAdapter
-//        }
-
-        rvBreakingNews.layoutManager = LinearLayoutManager(activity)
-        rvBreakingNews.adapter=newsAdapter
-//        Toast.makeText(activity, binding.rvBreakingNews.adapter.toString(), Toast.LENGTH_SHORT).show()
+        newsAdapter = NewsAdapter()  //no list is passed
+        binding.rvBreakingNews.apply {
+            layoutManager= LinearLayoutManager(activity)
+            adapter=newsAdapter
+        }
     }
 }
