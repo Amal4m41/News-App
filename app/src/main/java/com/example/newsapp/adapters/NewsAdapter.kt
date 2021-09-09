@@ -61,7 +61,9 @@ class NewsAdapter :
             tvDescription.text = itemArticle.description
             tvTitle.text = itemArticle.title
             tvPublishedAt.text = itemArticle.publishedAt
-            onItemClickListener?.let { it(itemArticle) } //if the onItemClickListener is not null then call the function
+//            root.setOnClickListener {
+//                onItemClickListener?.let { it(itemArticle) } //if the onItemClickListener is not null then call the function
+//            }
         }
 
     }
@@ -94,36 +96,14 @@ class NewsAdapter :
     inner class ArticleViewHolder(val binding: ItemArticlePreviewBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        var positionValue:Int = -1  //to get the clicked item index from the recycler view
+        var positionValue: Int = -1  //to get the clicked item index from the recycler view
 
-//        init {
-//            //attaching on click listeners
-//
-//            binding.ivDelete.setOnClickListener {
-//                viewModel.delete(items[positionValue])
-//            }
-//
-//            binding.ivAdd.setOnClickListener {
-////                Toast.makeText(context, "Click add", Toast.LENGTH_SHORT).show()
-//                items[positionValue].amount+=1
-//                viewModel.upsert(items[positionValue])  //updates the item as there already exist an item with the same id property
-//            }
-//
-//            binding.ivMinus.setOnClickListener {
-////                Toast.makeText(context, "Click minus", Toast.LENGTH_SHORT).show()
-//                val shoppingItem = items[positionValue]
-//
-//                if(shoppingItem.amount>0){
-//                    shoppingItem.amount-=1
-//                }
-//
-//                viewModel.upsert(shoppingItem)
-//            }
-//        }
+        init {
+            binding.root.setOnClickListener {
+                onItemClickListener?.let { it(differ.currentList[positionValue]) } //if the onItemClickListener is not null then call the function
+            }
+        }
 
     }
-
-
-
 
 }

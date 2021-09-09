@@ -5,13 +5,16 @@ import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsAdapter
 import com.example.newsapp.databinding.FragmentBreakingNewsBinding
 import com.example.newsapp.databinding.FragmentSearchNewsBinding
+import com.example.newsapp.models.Article
 import com.example.newsapp.ui.NewsActivity
 import com.example.newsapp.ui.NewsViewModel
+import com.example.newsapp.util.Constants
 import com.example.newsapp.util.Resource
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -34,6 +37,22 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
         _binding = FragmentSearchNewsBinding.bind(view)
 
         setupRecyclerView()
+
+        newsAdapter.setOnclickListener(fun(article: Article):Unit{
+            //here we get the article we clicked from the recycler view, now we'll get the clicked article
+            //put it in a bundle and then attach this bundle to the navigation component so that navigation
+            //components will handle the navigation transition for us and pass the arguments to the article fragment.
+            val bundle = Bundle()
+            bundle.apply {
+                putSerializable(Constants.ARTICLE,article)
+            }
+
+            //we need to pass the id of the action that makes the transition from this fragment to the article fragment.
+            //and the arguments that is to be passed to the article fragment.
+            findNavController().navigate(R.id.action_searchNewsFragment_to_articleFragment,bundle)
+
+        })
+
 
         //get the instance value of viewmodel from the newsactivity
         viewModel = (activity as NewsActivity).viewModel

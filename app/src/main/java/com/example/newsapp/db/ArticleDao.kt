@@ -15,4 +15,8 @@ interface ArticleDao {
 
     @Query("SELECT * FROM articles")
     fun getAllArticles(): LiveData<List<Article>>
+
+    @Query("SELECT COUNT(*) FROM articles where url = :articleUrl")
+    fun isArticleAlreadySaved(articleUrl:String):Long
+
 }

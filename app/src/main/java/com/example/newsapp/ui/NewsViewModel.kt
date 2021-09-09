@@ -1,8 +1,10 @@
 package com.example.newsapp.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.newsapp.models.Article
 import com.example.newsapp.models.NewsResponse
 import com.example.newsapp.repository.NewsRepository
 import com.example.newsapp.util.Resource
@@ -43,7 +45,7 @@ class NewsViewModel(val newsRepository: NewsRepository):ViewModel() {
 
     fun getSearchedNews(searchQuery:String) = viewModelScope.launch {
         searchNews.postValue(Resource.Loading())
-        val response = newsRepository.searchForNews(searchQuery,breakingNewsPage)
+        val response = newsRepository.searchForNews(searchQuery,searchNewsPage)
 
         searchNews.postValue(handleSearchedNewsResponse(response))
     }
@@ -74,6 +76,17 @@ class NewsViewModel(val newsRepository: NewsRepository):ViewModel() {
         return Resource.Error(response.message())
     }
 
+    //Local db related queries
 
+    //Since it's a read query to local db we don't require coroutine.
+    fun getSavedNewsArticle():LiveData<List<Article>> =  newsRepository.getAllSavedArticles()
+
+    fun upsert(article:Article) =  viewModelScope.launch {
+        newsRepository.upsert(article)
+    }
+
+    fun deleteArticle(article:Article) =  viewModelScope.launch {
+        newsRepository.deleteArticle(article)
+    }
 
 }

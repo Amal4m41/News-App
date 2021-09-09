@@ -2,6 +2,7 @@ package com.example.newsapp.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 
 /*
@@ -23,4 +24,4 @@ data class Article(
         val title: String,
         val url: String,
         val urlToImage: String
-)
+):Serializable   //making it serializable so that we can transfer them between fragments.

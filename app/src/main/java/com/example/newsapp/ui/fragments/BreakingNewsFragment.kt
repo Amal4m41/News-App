@@ -16,7 +16,10 @@ import com.example.newsapp.databinding.FragmentBreakingNewsBinding
 import com.example.newsapp.ui.NewsActivity
 import com.example.newsapp.ui.NewsViewModel
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.newsapp.models.Article
+import com.example.newsapp.util.Constants
 import com.example.newsapp.util.Resource
 import java.util.*
 
@@ -35,6 +38,23 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
         _binding = FragmentBreakingNewsBinding.bind(view)
 
         setupRecyclerView()
+
+
+        newsAdapter.setOnclickListener(fun(article:Article):Unit{
+            //here we get the article we clicked from the recycler view, now we'll get the clicked article
+            //put it in a bundle and then attach this bundle to the navigation component so that navigation
+            //components will handle the navigation transition for us and pass the arguments to the article fragment.
+            val bundle = Bundle()
+            bundle.apply {
+                putSerializable(Constants.ARTICLE,article)
+            }
+
+            //we need to pass the id of the action that makes the transition from this fragment to the article fragment.
+            //and the arguments that is to be passed to the article fragment.
+            findNavController().navigate(R.id.action_breakingNewsFragment_to_articleFragment,bundle)
+
+        })
+
 
         //get the instance value of viewmodel from the newsactivity
         viewModel = (activity as NewsActivity).viewModel
