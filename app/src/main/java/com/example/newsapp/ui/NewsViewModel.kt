@@ -16,9 +16,12 @@ class NewsViewModel(val newsRepository: NewsRepository):ViewModel() {
     //Our fragments can subscribe to this livedata as observers and whenever we post changes to the livedata then our
     //observers will automatically get notified about the changes.
     //Even when we rotate our devices the UI is rebuilt but the viewmodel is not affected therefore we still get the up to date data.
+
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
+    val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
 
     val breakingNewsPage = 1
+    val searchNewsPage = 1
 
 
     init {
@@ -38,6 +41,13 @@ class NewsViewModel(val newsRepository: NewsRepository):ViewModel() {
         breakingNews.postValue(handleBreakingNewsResponse(response))
     }
 
+    fun getSearchedNews(searchQuery:String) = viewModelScope.launch {
+        searchNews.postValue(Resource.Loading())
+        val response = newsRepository.searchForNews(searchQuery,breakingNewsPage)
+
+        searchNews.postValue(handleSearchedNewsResponse(response))
+    }
+
 
     //Decides to emit the success or error state in the Resource class depending upon the response.
     private fun handleBreakingNewsResponse(response: Response<NewsResponse>):Resource<NewsResponse> {
@@ -51,5 +61,19 @@ class NewsViewModel(val newsRepository: NewsRepository):ViewModel() {
 
         return Resource.Error(response.message())
     }
+
+    private fun handleSearchedNewsResponse(response: Response<NewsResponse>):Resource<NewsResponse> {
+        if(response.isSuccessful){
+            response.body()?.let {
+                //if the body is not null then execute this block
+                responseBody ->
+                return Resource.Success(responseBody)
+            }
+        }
+
+        return Resource.Error(response.message())
+    }
+
+
 
 }

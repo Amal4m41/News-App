@@ -20,7 +20,6 @@ class NewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
 
-
         val articleDatabase:ArticleDatabase = ArticleDatabase(this)
         val newsRepository = NewsRepository(articleDatabase)
         val viewModelProviderFactory = NewsViewModelProviderFactory(newsRepository)

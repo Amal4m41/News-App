@@ -3,6 +3,8 @@ package com.example.newsapp.repository
 import com.example.newsapp.api.RetrofitInstance
 import com.example.newsapp.db.ArticleDatabase
 import com.example.newsapp.models.Article
+import com.example.newsapp.models.NewsResponse
+import retrofit2.Response
 
 
 //We access data from api and local db(saved articles)
@@ -12,10 +14,11 @@ import com.example.newsapp.models.Article
 //change in data
 class NewsRepository(val db:ArticleDatabase) {
 
-    suspend fun getBreakingNews(countryCode:String,pageNumber:Int)=
+    //Getting data from the api requests:
+    suspend fun getBreakingNews(countryCode:String,pageNumber:Int): Response<NewsResponse> =
             RetrofitInstance.api.getBreakingNews(countryCode,pageNumber)
 
-    suspend fun searchForNews(query: String,pageNumber: Int) =
+    suspend fun searchForNews(query: String,pageNumber: Int): Response<NewsResponse> =
             RetrofitInstance.api.searchForNews(query,pageNumber)
 
     
