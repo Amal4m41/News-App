@@ -89,4 +89,5 @@ class NewsViewModel(val newsRepository: NewsRepository):ViewModel() {
         newsRepository.deleteArticle(article)
     }
 
+    fun isArticleSavedAlready(articleUrl:String):LiveData<Long> = newsRepository.isArticleAlreadySaved(articleUrl)
 }

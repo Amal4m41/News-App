@@ -59,7 +59,8 @@ class SavedNewsFragment: Fragment(R.layout.fragment_saved_news) {
         //subscribing to all the changes w.r.t the livedata
         viewModel.getSavedNewsArticle().observe(viewLifecycleOwner, {
             //whenever the data in the database changes, this code  block will be executed.
-            newsAdapter.differ.submitList(it)
+            newsAdapter.differ.submitList(it) //differ will compute the difference in the existing list in recycler and the passed list and then
+            //only update those changes that have been changed.
         })
 
         setupSwipeFeatureToDeleteArticle()
@@ -91,16 +92,16 @@ class SavedNewsFragment: Fragment(R.layout.fragment_saved_news) {
 
     private fun setupSwipeFeatureToDeleteArticle(){
         val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback = object: ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                ItemTouchHelper.ACTION_STATE_IDLE,  //we don't require drag feature.
                 ItemTouchHelper.RIGHT or  ItemTouchHelper.LEFT){
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return true //we don't require this feature
+                return false //we don't require this feature
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition //Returns the Adapter position of the item represented by this ViewHolder.
-                val article = newsAdapter.differ.currentList[position]
+                val article = newsAdapter.differ.currentList[position]  //get the swiped article
 
                 //Delete the article
                 viewModel.deleteArticle(article)

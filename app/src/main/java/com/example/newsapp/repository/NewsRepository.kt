@@ -1,5 +1,6 @@
 package com.example.newsapp.repository
 
+import androidx.lifecycle.LiveData
 import com.example.newsapp.api.RetrofitInstance
 import com.example.newsapp.db.ArticleDatabase
 import com.example.newsapp.models.Article
@@ -26,6 +27,7 @@ class NewsRepository(val db:ArticleDatabase) {
     suspend fun upsert(article:Article) = db.getArticleDao().upsertArticle(article)
     suspend fun deleteArticle(article:Article) = db.getArticleDao().deleteArticle(article)
     fun getAllSavedArticles() = db.getArticleDao().getAllArticles()
+    fun isArticleAlreadySaved(articleUrl:String):LiveData<Long> = db.getArticleDao().isArticleAlreadySaved(articleUrl)
 
 
 }

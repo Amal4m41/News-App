@@ -57,7 +57,7 @@ class NewsAdapter :
 
         holder.binding.apply {
             Glide.with(holder.binding.root).load(itemArticle.urlToImage).into(ivArticleImage)
-            tvSource.text = itemArticle.source.name
+            tvSource.text = itemArticle.source?.name
             tvDescription.text = itemArticle.description
             tvTitle.text = itemArticle.title
             tvPublishedAt.text = itemArticle.publishedAt

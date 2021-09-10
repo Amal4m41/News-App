@@ -3,6 +3,7 @@ package com.example.newsapp.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -59,13 +60,27 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
 
         //subscribing to all the changes w.r.t the livedata
         viewModel.searchNews.observe(viewLifecycleOwner, {
+
+//            Toast.makeText(activity, "HERE AGAIN", Toast.LENGTH_SHORT).show()
             when (it) {
                 is Resource.Success -> {
                     hideProgressBar()
                     //if the data is not null the update the recycler view list
                     it.data?.let { newsResponse ->
+                        if (newsResponse.articles.isNullOrEmpty()) {
+                            binding.tvSearchToFindMessage.apply {
+                                text = "No articles found! Try different keyword"
+                                visibility = View.VISIBLE
+                            }
+                            binding.ivSearchToFindImage.visibility = View.INVISIBLE
+                            binding.rvSearchNews.visibility = View.INVISIBLE
+                        } else {
+                            binding.ivSearchToFindImage.visibility = View.INVISIBLE
+                            binding.tvSearchToFindMessage.visibility = View.INVISIBLE
+                            binding.rvSearchNews.visibility = View.VISIBLE
+                            newsAdapter.differ.submitList(newsResponse.articles)  //passing the articles list to the adapter
+                        }
 //                        Toast.makeText(activity, "SUCCESS $newsAdapter", Toast.LENGTH_SHORT).show()
-                        newsAdapter.differ.submitList(newsResponse.articles)  //passing the articles list to the adapter
 //                        Toast.makeText(activity, "${newsAdapter.itemCount}", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -110,6 +125,7 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
     // instance in the fragment's onDestroyView() method.
     override fun onDestroyView() {
         super.onDestroyView()
+//        Toast.makeText(activity, "Destroy", Toast.LENGTH_SHORT).show()
         _binding = null
     }
 
@@ -123,10 +139,18 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
 
 
     private fun setupRecyclerView(){
+
+
+
         newsAdapter = NewsAdapter()  //no list is passed
         binding.rvSearchNews.apply {
             layoutManager= LinearLayoutManager(activity)
             adapter=newsAdapter
+        }
+
+        if(newsAdapter.differ.currentList.isNullOrEmpty()){
+            binding.tvSearchToFindMessage.visibility=View.VISIBLE
+            binding.ivSearchToFindImage.visibility=View.VISIBLE
         }
     }
     

@@ -1,13 +1,15 @@
 package com.example.newsapp.ui.fragments
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebViewClient
+import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentArticleBinding
-import com.example.newsapp.databinding.FragmentBreakingNewsBinding
 import com.example.newsapp.models.Article
 import com.example.newsapp.ui.NewsActivity
 import com.example.newsapp.ui.NewsViewModel
@@ -19,6 +21,7 @@ class ArticleFragment: Fragment(R.layout.fragment_article) {
     private val binding: FragmentArticleBinding get() = _binding!!
 
     private lateinit var viewModel:NewsViewModel
+    private var isArticleAlreadySaved:Boolean = false  //to show red heart in fab and to prevent multiple copies of saved articles.
 
     val args: ArticleFragmentArgs by navArgs() // ArticleFragmentArgs is a class that was generated when we rebuild the project.
 
@@ -29,6 +32,19 @@ class ArticleFragment: Fragment(R.layout.fragment_article) {
         viewModel = (activity as NewsActivity).viewModel
 
         val article = args.article //get the article
+
+        viewModel.isArticleSavedAlready(article.url).observe(viewLifecycleOwner,{
+            isArticleAlreadySaved = it > 0L
+            if(isArticleAlreadySaved){
+                ImageViewCompat.setImageTintList(
+                        binding.fabSaveArticle,
+                        ColorStateList.valueOf(Color.RED)
+                )
+//                binding.fabSaveArticle.setColorFilter(Color.RED)
+            }
+        })
+
+
 
         setUpWebView(article)
         setSaveArticleListener(article)
@@ -44,8 +60,13 @@ class ArticleFragment: Fragment(R.layout.fragment_article) {
     //To save the article to the local db upon clicking the fab button
     private fun setSaveArticleListener(article:Article){
         binding.fabSaveArticle.setOnClickListener {
-            viewModel.upsert(article)
-            Snackbar.make(binding.root,"Article saved successfully",Snackbar.LENGTH_SHORT).show()
+            if(!isArticleAlreadySaved){ //if article is not saved already then save it.
+                viewModel.upsert(article)
+                Snackbar.make(binding.root,"Article saved successfully",Snackbar.LENGTH_SHORT).show()
+            }
+            else{
+                Snackbar.make(binding.root,"Saved already!",Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 
