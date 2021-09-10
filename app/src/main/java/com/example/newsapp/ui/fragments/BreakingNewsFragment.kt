@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -67,8 +68,18 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
                     //if the data is not null the update the recycler view list
                     it.data?.let { newsResponse ->
 //                        Toast.makeText(activity, "SUCCESS $newsAdapter", Toast.LENGTH_SHORT).show()
-                        newsAdapter.differ.submitList(newsResponse.articles)  //passing the articles list to the adapter
+                        newsAdapter.differ.submitList(newsResponse.articles.toList())  //passing the articles list to the adapter
 //                        Toast.makeText(activity, "${newsAdapter.itemCount}", Toast.LENGTH_SHORT).show()
+
+
+                        //Every time we get a response we check if it's the last page so that we can stop the pagination.
+                        //We get the overall total articles available then divide it by 20 + 1(cuz int division) to get the total pages
+                        val totalPages:Int = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 1
+                        isLastPage = viewModel.breakingNewsPage - 1 == totalPages  //- 1 cuz the last page is always empty
+                        if(isLastPage){
+                            binding.rvBreakingNews.setPadding(0,0,0,0)
+                            //once the last page is reached we don't require space for the pagination loading progress bar
+                        }
                     }
                 }
 
@@ -98,18 +109,66 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
 
     private fun hideProgressBar(){
         binding.paginationProgressBarBreakingNews.visibility = View.INVISIBLE
+        isLoading=false
     }
 
     private fun showProgressBar(){
         binding.paginationProgressBarBreakingNews.visibility = View.VISIBLE
+        isLoading=true
     }
 
+
+    //Pagination related properties
+    var isLoading=false
+    var isLastPage=false
+    var isScrolling=false
+
+
+    //     * An OnScrollListener can be added to a RecyclerView to receive messages when a scrolling event
+    //     * has occurred on that RecyclerView.
+    val scrollListener = object: RecyclerView.OnScrollListener(){
+
+        //Callback method to be invoked when RecyclerView's scroll state changes.
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+
+            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+            {
+                isScrolling=true
+            }
+        }
+
+        //Callback method to be invoked when the RecyclerView has been scrolled. This will be called after the scroll has completed.
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            //To find if we have reached the end of a page(w.r.t the number of articles) after scrolling
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition() //position of the item that's first visible on our SCREEN
+            val visibleItemCount = layoutManager.childCount //tells how many items are visible in the current screen.
+            val totalItemCount = layoutManager.itemCount
+
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBeginning = firstVisibleItemPosition > 0
+            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
+            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible
+                    && isScrolling
+
+            if(shouldPaginate){
+                viewModel.getBreakingNews("us")
+                isScrolling=false
+            }
+
+        }
+    }
 
     private fun setupRecyclerView(){
         newsAdapter = NewsAdapter()  //no list is passed
         binding.rvBreakingNews.apply {
             layoutManager= LinearLayoutManager(activity)
             adapter=newsAdapter
+            addOnScrollListener(this@BreakingNewsFragment.scrollListener)
         }
     }
 }

@@ -22,8 +22,11 @@ class NewsViewModel(val newsRepository: NewsRepository):ViewModel() {
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
 
-    val breakingNewsPage = 1
-    val searchNewsPage = 1
+    var breakingNewsPage = 1
+    var searchNewsPage = 1
+
+    var breakingNewsResponse:NewsResponse? = null
+    var searchNewsResponse:NewsResponse? = null
 
 
     init {
@@ -57,7 +60,19 @@ class NewsViewModel(val newsRepository: NewsRepository):ViewModel() {
             response.body()?.let {
                 //if the body is not null then execute this block
                 responseBody ->
-                return Resource.Success(responseBody)
+
+                breakingNewsPage+=1  //which page to request for in the next request for breaking news
+                if(breakingNewsResponse==null){
+                    breakingNewsResponse=responseBody
+                }
+                else{
+                    val oldArticles:MutableList<Article> = breakingNewsResponse!!.articles  //get the prev pages articles(REFERENCE)
+                    val newArticles:MutableList<Article> = responseBody.articles  //get current requested page articles.
+                    oldArticles.addAll(newArticles)  //append the latest page articles(same as breakingNewsResponse.articles.addAll(newsArticles)
+                }
+
+
+                return Resource.Success(breakingNewsResponse?:responseBody)
             }
         }
 
@@ -69,7 +84,19 @@ class NewsViewModel(val newsRepository: NewsRepository):ViewModel() {
             response.body()?.let {
                 //if the body is not null then execute this block
                 responseBody ->
-                return Resource.Success(responseBody)
+
+                searchNewsPage+=1  //which page to request for in the next request
+                if(searchNewsResponse==null){
+                    searchNewsResponse=responseBody
+                }
+                else{
+                    val oldArticles:MutableList<Article> = searchNewsResponse!!.articles  //get the prev pages articles
+                    val newArticles:MutableList<Article> = responseBody.articles  //get current requested page articles.
+                    oldArticles.addAll(newArticles)  //append the latest page articles
+                }
+
+
+                return Resource.Success(searchNewsResponse?:responseBody)
             }
         }
 
