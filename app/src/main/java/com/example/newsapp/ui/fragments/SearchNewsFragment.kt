@@ -104,6 +104,7 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
                     hideProgressBar()
                     it.message?.let { message ->
                         Log.e(TAG, "Error $message")
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
                     }
 
                 }

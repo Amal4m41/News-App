@@ -74,10 +74,10 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
 
                         //Every time we get a response we check if it's the last page so that we can stop the pagination.
                         //We get the overall total articles available then divide it by 20 + 1(cuz int division) to get the total pages
-                        val totalPages:Int = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 1
+                        val totalPages: Int = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 1
                         isLastPage = viewModel.breakingNewsPage - 1 == totalPages  //- 1 cuz the last page is always empty
-                        if(isLastPage){
-                            binding.rvBreakingNews.setPadding(0,0,0,0)
+                        if (isLastPage) {
+                            binding.rvBreakingNews.setPadding(0, 0, 0, 0)
                             //once the last page is reached we don't require space for the pagination loading progress bar
                         }
                     }
@@ -86,7 +86,8 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
                 is Resource.Error -> {
                     hideProgressBar()
                     it.message?.let { message ->
-                        Log.e(TAG, "Error $message")
+                        Log.e(TAG, "Error : $message")
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
                     }
 
                 }
