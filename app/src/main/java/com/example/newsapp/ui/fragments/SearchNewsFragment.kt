@@ -80,6 +80,13 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
 //                            binding.ivSearchToFindImage.visibility = View.INVISIBLE
 //                            binding.tvSearchToFindMessage.visibility = View.INVISIBLE
 //                            binding.rvSearchNews.visibility = View.VISIBLE
+                        if(binding.llNoInternetMsg.visibility==View.VISIBLE){
+                            binding.apply {
+                                llNoInternetMsg.visibility=View.GONE
+                                rvSearchNews.visibility=View.VISIBLE
+                            }
+
+                        }
                         Log.e(TAG, "Search success: $newsResponse ")
                         newsAdapter.differ.submitList(newsResponse.articles.toList())  //passing the articles list to the adapter
 
@@ -106,8 +113,15 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
                         Log.e(TAG, "Error $message")
 
                         if(!(message==Constants.NO_INTERNET_CONNECTION && viewModel.hasInternetConnection())){
-                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+                            if(message==Constants.NO_INTERNET_CONNECTION){
+                                binding.rvSearchNews.visibility=View.INVISIBLE
+
+                                binding.tvNoInternetMsg.text=message
+                                binding.llNoInternetMsg.visibility=View.VISIBLE
+                            }
                         }
+
                     }
 
                 }

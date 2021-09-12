@@ -67,6 +67,13 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
                     hideProgressBar()
                     //if the data is not null the update the recycler view list
                     it.data?.let { newsResponse ->
+
+                        if(binding.llNoInternetMsg.visibility==View.VISIBLE){
+                            binding.apply {
+                                llNoInternetMsg.visibility=View.GONE
+                                rvBreakingNews.visibility=View.VISIBLE
+                            }
+                        }
 //                        Toast.makeText(activity, "SUCCESS $newsAdapter", Toast.LENGTH_SHORT).show()
                         newsAdapter.differ.submitList(newsResponse.articles.toList())  //passing the articles list to the adapter
 //                        Toast.makeText(activity, "${newsAdapter.itemCount}", Toast.LENGTH_SHORT).show()
@@ -88,6 +95,7 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
                     it.message?.let { message ->
                         Log.e(TAG, "Error : $message")
 
+
                         if(message==Constants.NO_INTERNET_CONNECTION && viewModel.hasInternetConnection()){
                             //if previously we didn't have internet connection and now when the fragment is chosen the
                             //internet is active, then make request for breaking news.
@@ -100,7 +108,16 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
 
                         }
                         else{
-                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+                            if(message==Constants.NO_INTERNET_CONNECTION){
+                                binding.apply {
+                                    rvBreakingNews.visibility=View.INVISIBLE
+                                    tvNoInternetMsg.text=message
+                                    llNoInternetMsg.visibility=View.VISIBLE
+                                }
+                            }
+                            else{
+                                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
 

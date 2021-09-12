@@ -36,32 +36,55 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/ivSearchToFindImage"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_baseline_search_24"
-        app:layout_constraintBottom_toTopOf="@id/tvSearchToFindMessage"
-        app:layout_constraintStart_toStartOf="@id/tvSearchToFindMessage"
-        app:layout_constraintEnd_toEndOf="@id/tvSearchToFindMessage"
-        android:visibility="invisible"
-        tools:visibility="visible"
-        />
+<!--    <ImageView-->
+<!--        android:id="@+id/ivSearchToFindImage"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:src="@drawable/ic_baseline_search_24"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/tvSearchToFindMessage"-->
+<!--        app:layout_constraintStart_toStartOf="@id/tvSearchToFindMessage"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/tvSearchToFindMessage"-->
+<!--        android:visibility="invisible"-->
+<!--        tools:visibility="visible"-->
+<!--        />-->
 
-    <TextView
-        android:id="@+id/tvSearchToFindMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<!--    <TextView-->
+<!--        android:id="@+id/tvSearchToFindMessage"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="16dp"-->
+<!--        android:text="Search to find related articles here"-->
+<!--        android:textSize="20sp"-->
+<!--        android:visibility="invisible"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/etSearchNews"-->
+<!--        tools:visibility="visible" />-->
+
+    <LinearLayout
+        android:id="@+id/llNoInternetMsg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:gravity="center"
-        android:padding="16dp"
-        android:text="Search to find related articles here"
-        android:textSize="20sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etSearchNews"
-        tools:visibility="visible" />
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_baseline_wifi_off_24"/>
+
+        <TextView
+            android:id="@+id/tvNoInternetMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            tools:text="Dummy Text"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
