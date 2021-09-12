@@ -36,6 +36,7 @@ class ArticleFragment: Fragment(R.layout.fragment_article) {
         viewModel.isArticleSavedAlready(article.url).observe(viewLifecycleOwner,{
             isArticleAlreadySaved = it > 0L
             if(isArticleAlreadySaved){
+                //Change the color of the fab button heart to red.
                 ImageViewCompat.setImageTintList(
                         binding.fabSaveArticle,
                         ColorStateList.valueOf(Color.RED)

@@ -104,7 +104,10 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
                     hideProgressBar()
                     it.message?.let { message ->
                         Log.e(TAG, "Error $message")
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+
+                        if(!(message==Constants.NO_INTERNET_CONNECTION && viewModel.hasInternetConnection())){
+                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                 }

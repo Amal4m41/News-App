@@ -14,7 +14,7 @@ import com.example.newsapp.models.Article
 )
 abstract class ArticleDatabase:RoomDatabase() {
 
-    //The implementation of this function will be done by Room.
+    //The implementation of this function and the DAO interface will be done by Room.
     abstract fun getArticleDao():ArticleDao
 
     companion object{
@@ -23,7 +23,7 @@ abstract class ArticleDatabase:RoomDatabase() {
 
         private val LOCK=Any()
 
-        //Will be called whenever we create an instance of this class.
+        //Will be called whenever we create an instance of this class(Making this class a singleton).
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK){
             //what happens inside this block can't be accessed by other threads at the same time.
             instance ?: createDatabase(context).also{

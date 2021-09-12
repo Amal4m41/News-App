@@ -29,5 +29,4 @@ class NewsRepository(val db:ArticleDatabase) {
     fun getAllSavedArticles() = db.getArticleDao().getAllArticles()
     fun isArticleAlreadySaved(articleUrl:String):LiveData<Long> = db.getArticleDao().isArticleAlreadySaved(articleUrl)
 
-
 }

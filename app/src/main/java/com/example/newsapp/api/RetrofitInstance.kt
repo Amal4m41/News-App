@@ -27,7 +27,7 @@ object RetrofitInstance {
     }
 
     val api by lazy {  //this is the object that we'll use to fire requests
-        retrofit.create(NewsAPI::class.java)  //Create an implementation of the API endpoints defined by the service interface.
+        retrofit.create(NewsAPI::class.java)  //Create an implementation of the API endpoints defined by the service interface(NewsAPI).
     }
 
 }

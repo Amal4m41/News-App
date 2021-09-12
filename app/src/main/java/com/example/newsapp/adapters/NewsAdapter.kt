@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.newsapp.R
 import com.example.newsapp.databinding.ItemArticlePreviewBinding
 import com.example.newsapp.models.Article
 
@@ -25,7 +26,7 @@ class NewsAdapter :
 //    private var onClickListenerRecyclerListItem:OnClickListenerRecyclerListItem?=null
 //
 
-    //creating an instance implementing the callback definition
+    //creating an instance implementing the callback definition from the abstract class.
     private val differCallback = object: DiffUtil.ItemCallback<Article>(){
 
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
@@ -56,7 +57,10 @@ class NewsAdapter :
         holder.positionValue=position  //while binding the data to this view, the position value is updated.
 
         holder.binding.apply {
-            Glide.with(holder.binding.root).load(itemArticle.urlToImage).into(ivArticleImage)
+            Glide.with(holder.binding.root)
+                    .load(itemArticle.urlToImage)
+                    .placeholder(R.drawable.ic_baseline_photo_24)
+                    .into(ivArticleImage)
             tvSource.text = itemArticle.source?.name
             tvDescription.text = itemArticle.description
             tvTitle.text = itemArticle.title

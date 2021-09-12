@@ -6,11 +6,13 @@ import android.net.ConnectivityManager
 import android.net.ConnectivityManager.*
 import android.net.NetworkCapabilities.*
 import android.os.Build
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.newsapp.NewsApplication
 import com.example.newsapp.models.Article
 import com.example.newsapp.models.NewsResponse
 import com.example.newsapp.repository.NewsRepository
+import com.example.newsapp.util.Constants
 import com.example.newsapp.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -129,6 +131,9 @@ class NewsViewModel(app: Application ,val newsRepository: NewsRepository):Androi
 
                 breakingNews.postValue(handleBreakingNewsResponse(response))
             }
+            else{
+                breakingNews.postValue(Resource.Error(Constants.NO_INTERNET_CONNECTION))
+            }
         }
         catch (e:Exception){
             when(e){
@@ -146,6 +151,9 @@ class NewsViewModel(app: Application ,val newsRepository: NewsRepository):Androi
 
                 searchNews.postValue(handleSearchedNewsResponse(response))
             }
+            else{
+                searchNews.postValue(Resource.Error(Constants.NO_INTERNET_CONNECTION))
+            }
         }
         catch (e:Exception){
             when(e){
@@ -156,7 +164,7 @@ class NewsViewModel(app: Application ,val newsRepository: NewsRepository):Androi
     }
 
 
-    private fun hasInternetConnection(): Boolean{
+    fun hasInternetConnection(): Boolean{
         //this function is only available inside of AndroidViewModel
         val connectivityManager= getApplication<NewsApplication>().getSystemService(
             Context.CONNECTIVITY_SERVICE

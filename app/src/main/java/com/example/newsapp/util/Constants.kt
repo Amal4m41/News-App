@@ -8,4 +8,5 @@ object Constants{
     const val ARTICLE = "article"
     const val QUERY_PAGE_SIZE = 20 //the page size/no. of articles returned per request by default
 
+    const val NO_INTERNET_CONNECTION = "No internet connection"
 }

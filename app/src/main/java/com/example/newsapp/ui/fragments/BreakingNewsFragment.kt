@@ -87,7 +87,21 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
                     hideProgressBar()
                     it.message?.let { message ->
                         Log.e(TAG, "Error : $message")
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+
+                        if(message==Constants.NO_INTERNET_CONNECTION && viewModel.hasInternetConnection()){
+                            //if previously we didn't have internet connection and now when the fragment is chosen the
+                            //internet is active, then make request for breaking news.
+                            //Otherwise the user will have to restart the app to get the breaking news, since it's only called
+                            //when the viewmodel object is created.
+
+                            viewModel.breakingNewsPage=1
+                            viewModel.breakingNewsResponse=null
+                            viewModel.getBreakingNews("us")
+
+                        }
+                        else{
+                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                 }
