@@ -6,6 +6,7 @@
    for this to work-->
     <item
         android:id="@+id/breakingNewsFragment"
+
         android:title="Breaking News"
         android:icon="@drawable/ic_breakingnews"/>
     <item
@@ -16,5 +17,9 @@
         android:id="@+id/savedNewsFragment"
         android:title="Saved News"
         android:icon="@drawable/ic_favourite_white"/>
+    <item
+        android:id="@+id/textSummarizerFragment"
+        android:title="Text Summarizer"
+        android:icon="@drawable/ic_baseline_summarize_24"/>
 
 </menu>

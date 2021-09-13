@@ -2,6 +2,7 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_nav_graph"
     app:startDestination="@id/breakingNewsFragment">
 
@@ -37,4 +38,9 @@
             android:name="article"
             app:argType="com.example.newsapp.models.Article" />
     </fragment>
+    <fragment
+        android:id="@+id/textSummarizerFragment"
+        android:name="com.example.newsapp.ui.fragments.TextSummarizerFragment"
+        android:label="fragment_text_summarizer"
+        tools:layout="@layout/fragment_text_summarizer" />
 </navigation>

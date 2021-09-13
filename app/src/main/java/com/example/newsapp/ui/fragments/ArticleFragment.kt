@@ -35,6 +35,7 @@ class ArticleFragment: Fragment(R.layout.fragment_article) {
 
         val article = args.article //get the article
 
+
         viewModel.isArticleSavedAlready(article.url).observe(viewLifecycleOwner, {
 
             if(it == null){
