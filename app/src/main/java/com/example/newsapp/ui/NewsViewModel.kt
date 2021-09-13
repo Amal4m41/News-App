@@ -116,7 +116,7 @@ class NewsViewModel(app: Application ,val newsRepository: NewsRepository):Androi
         newsRepository.deleteArticle(article)
     }
 
-    fun isArticleSavedAlready(articleUrl:String):LiveData<Long> = newsRepository.isArticleAlreadySaved(articleUrl)
+    fun isArticleSavedAlready(articleUrl:String):LiveData<Long?> = newsRepository.isArticleAlreadySaved(articleUrl)
 
 
 

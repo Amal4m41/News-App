@@ -16,6 +16,13 @@ interface ArticleDao {
     @Query("SELECT * FROM articles")
     fun getAllArticles(): LiveData<List<Article>>
 
-    @Query("SELECT COUNT(*) FROM articles where url = :articleUrl")
-    fun isArticleAlreadySaved(articleUrl:String):LiveData<Long>
+//    @Query("SELECT COUNT(*) FROM articles where url = :articleUrl")
+//    fun isArticleAlreadySaved(articleUrl:String):LiveData<Long>
+
+    /*
+    If the record is present then get it's id, so that we can directly delete it from the api results if the viewer wants to
+    remove from the saved list using the fab button.
+     */
+    @Query("SELECT id FROM articles where url = :articleUrl limit 1")
+    fun isArticleAlreadySaved(articleUrl:String):LiveData<Long?>
 }

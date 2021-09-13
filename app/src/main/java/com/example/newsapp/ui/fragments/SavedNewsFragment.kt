@@ -3,6 +3,7 @@ package com.example.newsapp.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -58,6 +59,7 @@ class SavedNewsFragment: Fragment(R.layout.fragment_saved_news) {
 
         //subscribing to all the changes w.r.t the livedata
         viewModel.getSavedNewsArticle().observe(viewLifecycleOwner, {
+//            Toast.makeText(activity, "DATA CHANGED", Toast.LENGTH_SHORT).show()
             //whenever the data in the database changes, this code  block will be executed.
             newsAdapter.differ.submitList(it) //differ will compute the difference in the existing list in recycler and the passed list and then
             //only update those changes that have been changed.
@@ -105,6 +107,7 @@ class SavedNewsFragment: Fragment(R.layout.fragment_saved_news) {
 
                 //Delete the article
                 viewModel.deleteArticle(article)
+                Log.e("ARTICLE_DELETE", "Saved news fragment: ${article.id}")
 
                 //Adding the undo feature
                 Snackbar.make(binding.root,"Successfully deleted article",Snackbar.LENGTH_LONG).apply {

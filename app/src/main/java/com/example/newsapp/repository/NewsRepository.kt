@@ -27,6 +27,6 @@ class NewsRepository(val db:ArticleDatabase) {
     suspend fun upsert(article:Article) = db.getArticleDao().upsertArticle(article)
     suspend fun deleteArticle(article:Article) = db.getArticleDao().deleteArticle(article)
     fun getAllSavedArticles() = db.getArticleDao().getAllArticles()
-    fun isArticleAlreadySaved(articleUrl:String):LiveData<Long> = db.getArticleDao().isArticleAlreadySaved(articleUrl)
+    fun isArticleAlreadySaved(articleUrl:String):LiveData<Long?> = db.getArticleDao().isArticleAlreadySaved(articleUrl)
 
 }

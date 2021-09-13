@@ -3,8 +3,10 @@ package com.example.newsapp.ui.fragments
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -33,15 +35,31 @@ class ArticleFragment: Fragment(R.layout.fragment_article) {
 
         val article = args.article //get the article
 
-        viewModel.isArticleSavedAlready(article.url).observe(viewLifecycleOwner,{
-            isArticleAlreadySaved = it > 0L
-            if(isArticleAlreadySaved){
+        viewModel.isArticleSavedAlready(article.url).observe(viewLifecycleOwner, {
+
+            if(it == null){
+                isArticleAlreadySaved = false
+            }
+            else{
+                isArticleAlreadySaved = it > 0L
+            }
+
+            Log.e("Is saved", "onViewCreated: $isArticleAlreadySaved , $it")
+            if (isArticleAlreadySaved) {
                 //Change the color of the fab button heart to red.
                 ImageViewCompat.setImageTintList(
                         binding.fabSaveArticle,
                         ColorStateList.valueOf(Color.RED)
                 )
-//                binding.fabSaveArticle.setColorFilter(Color.RED)
+
+                article.id = it!!.toInt()  //get the id w.r.t the database, so that we can now delete it from the db in case.
+
+            } else {
+                //Change the color of the fab button heart to white.
+                ImageViewCompat.setImageTintList(
+                        binding.fabSaveArticle,
+                        ColorStateList.valueOf(Color.WHITE)
+                )
             }
         })
 
@@ -66,7 +84,20 @@ class ArticleFragment: Fragment(R.layout.fragment_article) {
                 Snackbar.make(binding.root,"Article saved successfully",Snackbar.LENGTH_SHORT).show()
             }
             else{
-                Snackbar.make(binding.root,"Saved already!",Snackbar.LENGTH_SHORT).show()
+
+                viewModel.deleteArticle(article)
+                Log.e("ARTICLE_DELETE", "article fragment: ${article.id}")
+
+//                Snackbar.make(binding.root,"Saved already!",Snackbar.LENGTH_SHORT).show()
+
+                //Adding the undo feature
+                Snackbar.make(binding.root,"Removed from saved",Snackbar.LENGTH_LONG).apply {
+                    setAction("Undo"){
+                        viewModel.upsert(article)  //insert/save the article we just deleted.
+                    }
+
+                    show()
+                }
             }
         }
     }
