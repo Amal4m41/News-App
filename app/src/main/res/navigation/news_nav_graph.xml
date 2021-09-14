@@ -38,9 +38,26 @@
             android:name="article"
             app:argType="com.example.newsapp.models.Article" />
     </fragment>
+
     <fragment
         android:id="@+id/textSummarizerFragment"
         android:name="com.example.newsapp.ui.fragments.TextSummarizerFragment"
         android:label="fragment_text_summarizer"
         tools:layout="@layout/fragment_text_summarizer" />
+    <fragment
+        android:id="@+id/savedSummariesFragment"
+        android:name="com.example.newsapp.ui.fragments.SavedSummariesFragment"
+        android:label="SavedSummariesFragment" />
+    <fragment
+        android:id="@+id/moreFragment2"
+        android:name="com.example.newsapp.ui.fragments.MoreFragment"
+        android:label="fragment_more"
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment2_to_textSummarizerFragment"
+            app:destination="@id/textSummarizerFragment" />
+        <action
+            android:id="@+id/action_moreFragment2_to_savedSummariesFragment"
+            app:destination="@id/savedSummariesFragment" />
+    </fragment>
 </navigation>

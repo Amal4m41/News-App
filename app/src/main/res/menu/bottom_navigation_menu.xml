@@ -18,8 +18,8 @@
         android:title="Saved News"
         android:icon="@drawable/ic_favourite_white"/>
     <item
-        android:id="@+id/textSummarizerFragment"
-        android:title="Text Summarizer"
-        android:icon="@drawable/ic_baseline_summarize_24"/>
+        android:id="@+id/moreFragment2"
+        android:title="More"
+        android:icon="@drawable/ic_baseline_more_horiz_24"/>
 
 </menu>

@@ -1,5 +1,9 @@
 package com.example.newsapp.ui.fragments
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -12,6 +16,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.ImageViewCompat
 import androidx.navigation.fragment.navArgs
 import com.example.newsapp.R
@@ -36,6 +42,10 @@ class TextSummarizerFragment : Fragment(R.layout.fragment_text_summarizer) {
 
         binding.btnSummarize.setOnClickListener {
             getTextSummary()
+        }
+
+        binding.btnSavetoClipBoard.setOnClickListener {
+            copyTextToClipboard()
         }
     }
 
@@ -66,7 +76,13 @@ class TextSummarizerFragment : Fragment(R.layout.fragment_text_summarizer) {
 //        binding.progressBar.visibility= View.VISIBLE
         val text = binding.etTextInput.text.toString()
 
-        Text2Summary.summarizeAsync( text , 0.7f , callback  )
+        if(text.isNotBlank()){
+            Text2Summary.summarizeAsync( text , 0.7f , callback  )
+        }
+        else{
+            Toast.makeText(activity, "Please provide text to summarize!", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     fun TextView.makeScrollableInsideScrollView() {
@@ -82,6 +98,14 @@ class TextSummarizerFragment : Fragment(R.layout.fragment_text_summarizer) {
             }
             false
         }
+    }
+
+    private fun copyTextToClipboard() {
+        val textToCopy = binding.tvSummarizedText.text
+        val clipboardManager = activity?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("text", textToCopy)
+        clipboardManager.setPrimaryClip(clipData)
+        Toast.makeText(activity, "Text copied to clipboard", Toast.LENGTH_LONG).show()
     }
 
 }
