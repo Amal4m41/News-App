@@ -1,8 +1,11 @@
 package com.example.newsapp.ui.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,6 +22,7 @@ import com.example.newsapp.ui.NewsActivity
 import com.example.newsapp.ui.NewsViewModel
 import com.example.newsapp.util.Constants
 import com.example.newsapp.util.Resource
+import com.example.newsapp.util.UtilFuns
 import com.google.android.material.snackbar.Snackbar
 
 class SavedNewsFragment: Fragment(R.layout.fragment_saved_news) {
@@ -93,15 +97,8 @@ class SavedNewsFragment: Fragment(R.layout.fragment_saved_news) {
     }
 
     private fun setupSwipeFeatureToDeleteArticle(){
-        val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback = object: ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.ACTION_STATE_IDLE,  //we don't require drag feature.
-                ItemTouchHelper.RIGHT or  ItemTouchHelper.LEFT){
-
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return false //we don't require this feature
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        val itemTouchHelperCallback = UtilFuns.getOnItemSwipeCallback(object:UtilFuns.ItemSwipeCallbackInterface{
+            override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder) {
                 val position = viewHolder.adapterPosition //Returns the Adapter position of the item represented by this ViewHolder.
                 val article = newsAdapter.differ.currentList[position]  //get the swiped article
 
@@ -110,18 +107,19 @@ class SavedNewsFragment: Fragment(R.layout.fragment_saved_news) {
                 Log.e("ARTICLE_DELETE", "Saved news fragment: ${article.id}")
 
                 //Adding the undo feature
-                Snackbar.make(binding.root,"Successfully deleted article",Snackbar.LENGTH_LONG).apply {
+                Snackbar.make(binding.root,"Successfully deleted article", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo"){
                         viewModel.upsert(article)  //insert/save the article we just deleted.
                     }
 
                     show()
                 }
-
             }
-        }
+
+        })
 
         //Attach the itemtouchhelper instance with the callback to the recyclerview
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.rvSavedNews)
     }
+
 }

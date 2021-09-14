@@ -5,6 +5,7 @@ import com.example.newsapp.api.RetrofitInstance
 import com.example.newsapp.db.ArticleDatabase
 import com.example.newsapp.models.Article
 import com.example.newsapp.models.NewsResponse
+import com.example.newsapp.models.Summary
 import retrofit2.Response
 
 
@@ -23,10 +24,15 @@ class NewsRepository(val db:ArticleDatabase) {
             RetrofitInstance.api.searchForNews(query,pageNumber)
 
 
-    //Local db related queries
+    //Local db related queries for articles
     suspend fun upsert(article:Article) = db.getArticleDao().upsertArticle(article)
     suspend fun deleteArticle(article:Article) = db.getArticleDao().deleteArticle(article)
     fun getAllSavedArticles() = db.getArticleDao().getAllArticles()
     fun isArticleAlreadySaved(articleUrl:String):LiveData<Long?> = db.getArticleDao().isArticleAlreadySaved(articleUrl)
+
+    //Local db related queries for summary
+    suspend fun upsertSummary(summary: Summary)= db.getSummaryDao().upsertSummary(summary)
+    suspend fun deleteSummary(summary: Summary) = db.getSummaryDao().deleteSummary(summary)
+    fun getAllSavedSummaries():LiveData<List<Summary>> = db.getSummaryDao().getAllSummaries()
 
 }

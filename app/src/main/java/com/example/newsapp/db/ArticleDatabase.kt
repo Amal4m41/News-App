@@ -3,9 +3,10 @@ package com.example.newsapp.db
 import android.content.Context
 import androidx.room.*
 import com.example.newsapp.models.Article
+import com.example.newsapp.models.Summary
 
 @Database(
-    entities = [Article::class],
+    entities = [Article::class,Summary::class],
     version = 1
 )
 @TypeConverters(  //room only supports primitive data types therefore we add converters to convert source object to and from
@@ -16,6 +17,7 @@ abstract class ArticleDatabase:RoomDatabase() {
 
     //The implementation of this function and the DAO interface will be done by Room.
     abstract fun getArticleDao():ArticleDao
+    abstract fun getSummaryDao():SummaryDao
 
     companion object{
         @Volatile  //this means that other threads can immediately see when a thread changes this instance.

@@ -11,6 +11,7 @@ import androidx.lifecycle.*
 import com.example.newsapp.NewsApplication
 import com.example.newsapp.models.Article
 import com.example.newsapp.models.NewsResponse
+import com.example.newsapp.models.Summary
 import com.example.newsapp.repository.NewsRepository
 import com.example.newsapp.util.Constants
 import com.example.newsapp.util.Resource
@@ -119,7 +120,16 @@ class NewsViewModel(app: Application ,val newsRepository: NewsRepository):Androi
     fun isArticleSavedAlready(articleUrl:String):LiveData<Long?> = newsRepository.isArticleAlreadySaved(articleUrl)
 
 
+    //Summary related db queries
+    fun getSavedSummaries():LiveData<List<Summary>> = newsRepository.getAllSavedSummaries()
 
+    fun upsertSummary(summary:Summary) = viewModelScope.launch {
+        newsRepository.upsertSummary(summary)
+    }
+
+    fun deleteSummary(summary: Summary) = viewModelScope.launch {
+        newsRepository.deleteSummary(summary)
+    }
 
     suspend fun safeBreakingNewsCall(countryCode: String){
         //emit the loading state before making the network call

@@ -1,5 +1,6 @@
 package com.example.newsapp.ui.fragments
 
+import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -15,6 +16,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
@@ -24,6 +26,7 @@ import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentArticleBinding
 import com.example.newsapp.databinding.FragmentTextSummarizerBinding
 import com.example.newsapp.models.Article
+import com.example.newsapp.models.Summary
 import com.example.newsapp.ui.NewsActivity
 import com.example.newsapp.ui.NewsViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -35,18 +38,31 @@ class TextSummarizerFragment : Fragment(R.layout.fragment_text_summarizer) {
     private var _binding: FragmentTextSummarizerBinding?=null
     private val binding: FragmentTextSummarizerBinding get() = _binding!!
 
+    private lateinit var viewModel:NewsViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTextSummarizerBinding.bind(view)
 
-        binding.btnSummarize.setOnClickListener {
-            getTextSummary()
+        viewModel = (activity as NewsActivity).viewModel
+
+        binding.apply {
+
+            btnSummarize.setOnClickListener {
+                getTextSummary()
+            }
+
+            btnSavetoClipBoard.setOnClickListener {
+                copyTextToClipboard()
+            }
+
+            btnSaveSummary.setOnClickListener {
+                //This button is only visible if the text is summarized successfully
+                showCustomDialogForTitle()
+            }
+
         }
 
-        binding.btnSavetoClipBoard.setOnClickListener {
-            copyTextToClipboard()
-        }
     }
 
     //Note: Fragments outlive their views. Make sure you clean up any references to the binding class
@@ -106,6 +122,43 @@ class TextSummarizerFragment : Fragment(R.layout.fragment_text_summarizer) {
         val clipData = ClipData.newPlainText("text", textToCopy)
         clipboardManager.setPrimaryClip(clipData)
         Toast.makeText(activity, "Text copied to clipboard", Toast.LENGTH_LONG).show()
+    }
+
+    /**
+     * Method is used to show the Custom Dialog.
+     */
+    private fun showCustomDialogForTitle() {
+        val customDialog = activity?.let { Dialog(it) }
+        /*Set the screen content from a layout resource.
+    The resource will be inflated, adding all top-level views to the screen.*/
+
+
+        customDialog!!.setContentView(R.layout.dialog_summary_title_input)
+
+        val et = customDialog.findViewById<EditText>(R.id.etSummaryTitleInput)
+        var summaryTitle = ""
+
+        customDialog.findViewById<TextView>(R.id.tvSave).setOnClickListener(View.OnClickListener {
+            summaryTitle = et.text.toString()
+            if (summaryTitle.isNotBlank()) {
+                viewModel.upsertSummary(Summary(
+                        title = summaryTitle,
+                        summary = binding.tvSummarizedText.text.toString()))
+                Snackbar.make(binding.root,"Summary saved successfully",Snackbar.LENGTH_SHORT).show()
+                customDialog.dismiss() // Dialog will be dismissed
+            } else {
+                Toast.makeText(activity, "Please provide a title for the summary", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        customDialog.findViewById<TextView>(R.id.tvCancel).setOnClickListener(View.OnClickListener {
+            customDialog.dismiss()
+        })
+
+        customDialog.setCancelable(false)
+        //Start the dialog and display it on screen.
+        customDialog.show()
+
     }
 
 }
