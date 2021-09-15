@@ -17,4 +17,7 @@ interface SummaryDao {
     @Query("SELECT * FROM summaries")
     fun getAllSummaries(): LiveData<List<Summary>>
 
+    @Query("SELECT * FROM summaries where summaries.id=:id")
+    fun getSummary(id:Int): LiveData<Summary>
+
 }

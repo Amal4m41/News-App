@@ -123,6 +123,8 @@ class NewsViewModel(app: Application ,val newsRepository: NewsRepository):Androi
     //Summary related db queries
     fun getSavedSummaries():LiveData<List<Summary>> = newsRepository.getAllSavedSummaries()
 
+    fun getSummary(id:Int):LiveData<Summary> = newsRepository.getSummary(id)
+
     fun upsertSummary(summary:Summary) = viewModelScope.launch {
         newsRepository.upsertSummary(summary)
     }
@@ -130,6 +132,8 @@ class NewsViewModel(app: Application ,val newsRepository: NewsRepository):Androi
     fun deleteSummary(summary: Summary) = viewModelScope.launch {
         newsRepository.deleteSummary(summary)
     }
+
+
 
     suspend fun safeBreakingNewsCall(countryCode: String){
         //emit the loading state before making the network call

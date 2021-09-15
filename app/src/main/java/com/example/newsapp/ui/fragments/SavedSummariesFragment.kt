@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ import com.example.newsapp.databinding.FragmentSavedSummariesBinding
 import com.example.newsapp.models.Summary
 import com.example.newsapp.ui.NewsActivity
 import com.example.newsapp.ui.NewsViewModel
+import com.example.newsapp.util.Constants
 import com.example.newsapp.util.UtilFuns
 import com.google.android.material.snackbar.Snackbar
 
@@ -65,6 +67,17 @@ class SavedSummariesFragment : Fragment(R.layout.fragment_saved_summaries) {
             layoutManager= LinearLayoutManager(activity)
             adapter=summaryAdapter
         }
+
+        summaryAdapter.setOnclickListener(fun(summary:Summary):Unit{
+            val bundle = Bundle()
+            bundle.apply {
+                putSerializable(Constants.SUMMARY,summary)
+            }
+
+            //we need to pass the id of the action that makes the transition from this fragment to the article fragment.
+            //and the arguments that is to be passed to the article fragment.
+            findNavController().navigate(R.id.action_savedSummariesFragment_to_summaryFragment,bundle)
+        })
 
         setupSwipeFeatureToDeleteSummary()
     }

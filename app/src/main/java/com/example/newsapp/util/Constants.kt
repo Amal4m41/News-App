@@ -10,6 +10,7 @@ object Constants{
 
     const val NO_INTERNET_CONNECTION = "No internet connection"
 
+    const val SUMMARY = "summary"
 
 
 }

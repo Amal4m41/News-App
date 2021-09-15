@@ -47,7 +47,11 @@
     <fragment
         android:id="@+id/savedSummariesFragment"
         android:name="com.example.newsapp.ui.fragments.SavedSummariesFragment"
-        android:label="SavedSummariesFragment" />
+        android:label="SavedSummariesFragment" >
+        <action
+            android:id="@+id/action_savedSummariesFragment_to_summaryFragment"
+            app:destination="@id/summaryFragment" />
+    </fragment>
     <fragment
         android:id="@+id/moreFragment2"
         android:name="com.example.newsapp.ui.fragments.MoreFragment"
@@ -59,5 +63,24 @@
         <action
             android:id="@+id/action_moreFragment2_to_savedSummariesFragment"
             app:destination="@id/savedSummariesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/summaryFragment"
+        android:name="com.example.newsapp.ui.fragments.SummaryFragment"
+        android:label="SummaryFragment" >
+        <argument
+            android:name="summary"
+            app:argType="com.example.newsapp.models.Summary" />
+        <action
+            android:id="@+id/action_summaryFragment_to_summaryEditFragment"
+            app:destination="@id/summaryEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/summaryEditFragment"
+        android:name="com.example.newsapp.ui.fragments.SummaryEditFragment"
+        android:label="SummaryEditFragment" >
+        <argument
+            android:name="summary"
+            app:argType="com.example.newsapp.models.Summary" />
     </fragment>
 </navigation>

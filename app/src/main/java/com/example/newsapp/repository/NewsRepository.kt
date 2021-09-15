@@ -34,5 +34,6 @@ class NewsRepository(val db:ArticleDatabase) {
     suspend fun upsertSummary(summary: Summary)= db.getSummaryDao().upsertSummary(summary)
     suspend fun deleteSummary(summary: Summary) = db.getSummaryDao().deleteSummary(summary)
     fun getAllSavedSummaries():LiveData<List<Summary>> = db.getSummaryDao().getAllSummaries()
+    fun getSummary(id:Int):LiveData<Summary> = db.getSummaryDao().getSummary(id)
 
 }
