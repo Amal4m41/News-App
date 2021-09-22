@@ -39,6 +39,8 @@ class SavedSummariesFragment : Fragment(R.layout.fragment_saved_summaries) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSavedSummariesBinding.bind(view)
 
+        (activity as NewsActivity).setToolbarTitle(subtitle = "Saved Summaries")
+
         viewModel = (activity as NewsActivity).viewModel
 
         setupRecyclerView()

@@ -43,6 +43,7 @@ class TextSummarizerFragment : Fragment(R.layout.fragment_text_summarizer) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTextSummarizerBinding.bind(view)
+        (activity as NewsActivity).setToolbarTitle(subtitle = "Text Summarizer")
 
         viewModel = (activity as NewsActivity).viewModel
 

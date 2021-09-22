@@ -15,8 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsApp">
-        <activity android:name=".ui.NewsActivity"
-            android:theme="@style/Theme.MaterialComponents.Light">
+        <activity android:name=".ui.NewsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

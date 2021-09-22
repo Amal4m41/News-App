@@ -31,10 +31,13 @@ class ArticleFragment: Fragment(R.layout.fragment_article) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentArticleBinding.bind(view)
 
+        (activity as NewsActivity).setToolbarTitle(subtitle = "Article")
+
         viewModel = (activity as NewsActivity).viewModel
 
         val article = args.article //get the article
 
+        
 
         viewModel.isArticleSavedAlready(article.url).observe(viewLifecycleOwner, {
 

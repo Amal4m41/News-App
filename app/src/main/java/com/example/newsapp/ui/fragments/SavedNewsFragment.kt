@@ -39,6 +39,7 @@ class SavedNewsFragment: Fragment(R.layout.fragment_saved_news) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSavedNewsBinding.bind(view)
 
+        (activity as NewsActivity).setToolbarTitle(subtitle = "Saved News")
         setupRecyclerView()
 
 

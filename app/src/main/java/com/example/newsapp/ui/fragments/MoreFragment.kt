@@ -19,6 +19,7 @@ class MoreFragment : Fragment(R.layout.fragment_more) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMoreBinding.bind(view)
+        (activity as NewsActivity).setToolbarTitle(subtitle = "More")
 
 //        viewModel = (activity as NewsActivity).viewModel
 

@@ -37,13 +37,13 @@ class SummaryFragment: Fragment(R.layout.fragment_summary) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSummaryBinding.bind(view)
+        (activity as NewsActivity).setToolbarTitle(subtitle = "Summary")
 
         viewModel = (activity as NewsActivity).viewModel
 
         var summary = args.summary //get the article
 
-        Log.e("SUMMARY", "onViewCreated: $summary")
-        Toast.makeText(activity, "CREATED", Toast.LENGTH_SHORT).show()
+//        Log.e("SUMMARY", "onViewCreated: $summary")
 //        setUpdateSummaryListener(summary)
 
         viewModel.getSummary(summary.id!!).observe(viewLifecycleOwner, Observer {
@@ -121,9 +121,18 @@ class SummaryFragment: Fragment(R.layout.fragment_summary) {
     //Note: Fragments outlive their views. Make sure you clean up any references to the binding class
     // instance in the fragment's onDestroyView() method.
     override fun onDestroyView() {
-        Toast.makeText(activity, "DESTROY!!!", Toast.LENGTH_SHORT).show()
         super.onDestroyView()
         _binding = null
     }
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        Toast.makeText(activity, "ONCREATE", Toast.LENGTH_SHORT).show()
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        Toast.makeText(activity, "ONDESTROY", Toast.LENGTH_SHORT).show()
+//    }
 
 }

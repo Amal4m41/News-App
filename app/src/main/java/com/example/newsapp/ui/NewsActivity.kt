@@ -2,6 +2,7 @@ package com.example.newsapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toolbar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -17,6 +18,7 @@ class NewsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityNewsBinding
     lateinit var viewModel:NewsViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,8 +31,19 @@ class NewsActivity : AppCompatActivity() {
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbar)
+
+        setToolbarTitle()
+
         //Connecting our bottomNavigationView(menu) with navigation components(the fragment container)
         binding.bottomNavigationView.setupWithNavController(findNavController(R.id.newsNavHostFragment))
 
+    }
+
+    fun setToolbarTitle(title:String = "News App", subtitle:String = "Breaking News"){
+        binding.toolbar.apply {
+            this.title = title;
+            this.subtitle = subtitle;
+        }
     }
 }

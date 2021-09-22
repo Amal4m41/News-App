@@ -38,8 +38,8 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentBreakingNewsBinding.bind(view)
 
-        setupRecyclerView()
 
+        setupRecyclerView()
 
         newsAdapter.setOnclickListener(fun(article:Article):Unit{
             //here we get the article we clicked from the recycler view, now we'll get the clicked article
@@ -131,6 +131,12 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
         })
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        (requireContext() as NewsActivity).setToolbarTitle(subtitle = "Breaking News")
+    }
+
 
     //Note: Fragments outlive their views. Make sure you clean up any references to the binding class
     // instance in the fragment's onDestroyView() method.

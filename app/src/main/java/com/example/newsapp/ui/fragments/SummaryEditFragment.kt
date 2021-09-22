@@ -33,6 +33,7 @@ class SummaryEditFragment: Fragment(R.layout.fragment_summary_edit) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSummaryEditBinding.bind(view)
+        (activity as NewsActivity).setToolbarTitle(subtitle = "Edit Summary")
 
         viewModel = (activity as NewsActivity).viewModel
 

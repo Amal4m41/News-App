@@ -38,6 +38,7 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSearchNewsBinding.bind(view)
+        (activity as NewsActivity).setToolbarTitle(subtitle = "Search News")
 
         setupRecyclerView()
 
