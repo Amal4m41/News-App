@@ -1,4 +1,4 @@
-# News-App
+# News App for Android
 A simple news app that uses [NewsApi](https://newsapi.org/) to fetch the latest breaking news and news w.r.t the topic searched by the user. This app was created with the aim to learn the modern android development practices.
 <br><br>
 <b>Features :</b>
@@ -18,7 +18,13 @@ Normally we pass the list to the Adapter class and then whenever we want to upda
 adapter.notifyDatasetChanged(), but this is really inefficient as when we call notifyDatasetChanged() the recycler view will always update all of it's items, i.e. even the items that didn't change.
 To solve this problem we use DiffUtil as it calculates the difference between two lists and enables us to only update those items that is different, and another advantage is that this happens in the background without blocking our UI/Main thread.
 
-* Placing onClickListener for recycler view items inside view holder class(Considered as best practise) instead of onBindViewHolder() to avoid unneccessary attaching of onClickListener on the views that are recycled by the recyler view.
+* Placing onClickListener for recycler view items inside view holder class(Considered as best practise) instead of onBindViewHolder() to avoid unnecessary attaching of onClickListener on the views that are recycled by the recyler view.
+
+<br>
+<b>Architecture : </b><br>
+This app uses the MVVM(Model-View-ViewModel) architecture, and therefore has a unidirectional data flow so that it's easily scalable, flexible, improves testability, separation of concern etc. <br>
+<img height="800" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/mvvvm.png"> &nbsp;
+
 
 <br><br>
 <b>Screenshots :</b><br><br>
@@ -26,10 +32,11 @@ To solve this problem we use DiffUtil as it calculates the difference between tw
 <img height="500" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/searchNews.jpg"> &nbsp;
 <img height="500" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/savedNews.jpg"> &nbsp;
 <img height="500" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/more.jpg"> &nbsp;
+<img height="500" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/articleScreen.jpg"> &nbsp;
 <img height="500" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/textSummarizer.jpg"> &nbsp;
 <img height="500" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/savedSummary.jpg"> &nbsp;
 <img height="500" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/summary.jpg"> &nbsp;
-<img height="500" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/editSummary.jpg"> 
+<img height="500" src="https://github.com/Amal4m41/News-App/blob/master/screenshots/editSummary.jpg"> &nbsp;
 
 <br>
 Searching and saving/deleting articles : <br><br>
