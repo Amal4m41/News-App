@@ -47,9 +47,9 @@ Text summarization and saving/editing/deleting summaries : <br> <br>
 
 <b>Credits : </b><br>
 * [Text2Summary](https://github.com/shubham0204/Text2Summary-Android) library that was used for text summarization.
-* Udemy and Philip Lackner android courses for teaching me Android programming using Kotlin.
+* Udemy and Philip Lackner android courses for teaching me advanced Android programming using Kotlin.
 
 ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+)<b> TODO :</b><br>
 * Add feature to scrap text data from various web articles so that it can be directly summarized with a click. 
-* Update UI (Currently learning jetpack compose, may update this UI/Views in future with Composables)
+* Update UI (May update the current UI/Views in future with Composables)
 
